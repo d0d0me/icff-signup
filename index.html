@@ -5,37 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ICFF Sign-Up – Mutual Core</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: sans-serif;
       background-color: #1c1c1c;
       color: white;
+      height: 100%;
+      overflow-x: hidden;
+    }
+    body {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2em;
-      position: relative;
       box-sizing: border-box;
+      padding-top: 140px;
+      padding-bottom: 120px;
     }
     .logo-top {
-      position: absolute;
-      top: 4em;
+      position: fixed;
+      top: 2em;
       display: flex;
       justify-content: center;
       width: 100%;
+      z-index: 10;
     }
     .logo-top img {
       height: 100px;
     }
-    .logo-bottom {
-      position: fixed;
-      bottom: 3em;
-      left: 0;
+    .logo-bottom-wrapper {
       width: 100%;
+      background-color: white;
       display: flex;
       justify-content: center;
+      padding: 2em 0;
     }
     .logo-bottom img {
       height: 60px;
@@ -76,6 +80,11 @@
       color: #a0ffa0;
       text-align: center;
     }
+    @media (max-height: 600px) and (orientation: portrait) {
+      .logo-top img {
+        height: 60px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -83,19 +92,23 @@
     <img src="https://cdn.shopify.com/s/files/1/0450/6959/8869/files/Sigle_limpatience_White.png?v=1744998173" alt="L'Impatience logo">
   </div>
 
-  <form id="signup-form">
-    <h1>Visit us at Booth #W752</h1>
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="text" id="company" placeholder="Company Name">
-    <button type="submit">Sign Up</button>
-  </form>
-  <div class="confirmation" id="confirmation" style="display:none;">
-    Thank you! We'll be in touch soon.
+  <div id="form-container">
+    <form id="signup-form">
+      <h1>Visit us at Booth #W752</h1>
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="company" placeholder="Company Name">
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="confirmation" id="confirmation" style="display:none;">
+      Thank you! We'll be in touch soon.
+    </div>
   </div>
 
-  <div class="logo-bottom">
-    <img src="https://icff25.nvytes.co/icff25landing/img/logo.png" alt="ICFF logo">
+  <div class="logo-bottom-wrapper">
+    <div class="logo-bottom">
+      <img src="https://icff25.nvytes.co/icff25landing/img/logo.png" alt="ICFF logo">
+    </div>
   </div>
 
   <script type="module">
@@ -108,6 +121,7 @@
 
     const form = document.getElementById('signup-form');
     const confirmation = document.getElementById('confirmation');
+    const formContainer = document.getElementById('form-container');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -124,8 +138,14 @@
         alert('Something went wrong. Please try again.');
         console.error(error);
       } else {
-        form.reset();
+        form.style.display = 'none';
         confirmation.style.display = 'block';
+
+        setTimeout(() => {
+          form.reset();
+          form.style.display = 'flex';
+          confirmation.style.display = 'none';
+        }, 4000);
       }
     });
   </script>
