@@ -12,50 +12,49 @@
       background-color: #1c1c1c;
       color: white;
       height: 100%;
-      overflow-x: hidden;
+      overflow: hidden;
     }
-    body {
+    #video-section, #form-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       align-items: center;
-      box-sizing: border-box;
-      padding-top: 140px;
-      padding-bottom: 120px;
-    }
-    .logo-top {
-      position: fixed;
-      top: 2em;
-      display: flex;
       justify-content: center;
+      z-index: 1;
+      background: #000;
+    }
+    video {
       width: 100%;
-      z-index: 10;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
-    .logo-top img {
-      height: 100px;
-    }
-    .logo-bottom-wrapper {
-      width: 100%;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      padding: 2em 0;
-    }
-    .logo-bottom img {
-      height: 60px;
-    }
-    h1 {
-      font-size: 1.4em;
-      margin-bottom: 1em;
-      text-align: center;
+    #open-form-button {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      color: #1c1c1c;
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 2;
     }
     form {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2em;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       gap: 1em;
-      width: 100%;
+      width: 90%;
       max-width: 400px;
-      text-align: center;
     }
     input {
       padding: 0.8em;
@@ -91,20 +90,20 @@
       font-size: 0.9em;
       border-radius: 4px;
       cursor: pointer;
-    }
-    @media (max-height: 600px) and (orientation: portrait) {
-      .logo-top img {
-        height: 60px;
-      }
+      z-index: 3;
     }
   </style>
 </head>
 <body>
-  <div class="logo-top">
-    <img src="https://cdn.shopify.com/s/files/1/0450/6959/8869/files/Sigle_limpatience_White.png?v=1744998173" alt="L'Impatience logo">
+  <div id="video-section">
+    <video autoplay muted loop playsinline>
+      <source src="your-video-file.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <button id="open-form-button">Sign Up</button>
   </div>
 
-  <div id="form-container">
+  <div id="form-container" style="display: none;">
     <form id="signup-form">
       <h1>Visit us at Booth #W752</h1>
       <input type="text" id="name" placeholder="Full Name" required>
@@ -117,17 +116,18 @@
     </div>
   </div>
 
-  <div class="logo-bottom-wrapper">
-    <div class="logo-bottom">
-      <img src="https://icff25.nvytes.co/icff25landing/img/logo.png" alt="ICFF logo">
-    </div>
-  </div>
-
   <button class="admin-button" onclick="exportData()">Download Entries</button>
 
   <script>
     const form = document.getElementById('signup-form');
     const confirmation = document.getElementById('confirmation');
+    const formContainer = document.getElementById('form-container');
+    const openFormButton = document.getElementById('open-form-button');
+
+    openFormButton.addEventListener('click', () => {
+      document.getElementById('video-section').style.display = 'none';
+      formContainer.style.display = 'flex';
+    });
 
     const saveEntry = (entry) => {
       const key = 'icff_signups';
