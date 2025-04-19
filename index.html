@@ -37,14 +37,30 @@
       z-index: -1;
     }
     #open-form-button {
-      background: rgba(255, 255, 255, 0.9);
+      position: fixed;
+      bottom: 1em;
+      left: 1em;
+      background: rgba(255, 255, 255, 0.7);
       border: none;
       color: #1c1c1c;
-      padding: 1em 2em;
-      font-size: 1.2em;
-      border-radius: 5px;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      border-radius: 4px;
       cursor: pointer;
       z-index: 2;
+    }
+    #close-form-button {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid white;
+      color: white;
+      padding: 0.5em 1em;
+      font-size: 0.9em;
+      border-radius: 4px;
+      cursor: pointer;
+      z-index: 3;
     }
     form {
       background-color: rgba(0, 0, 0, 0.8);
@@ -104,6 +120,7 @@
   </div>
 
   <div id="form-container" style="display: none;">
+    <button id="close-form-button">× Close</button>
     <form id="signup-form">
       <h1>Visit us at Booth #W752</h1>
       <input type="text" id="name" placeholder="Full Name" required>
@@ -123,10 +140,17 @@
     const confirmation = document.getElementById('confirmation');
     const formContainer = document.getElementById('form-container');
     const openFormButton = document.getElementById('open-form-button');
+    const videoSection = document.getElementById('video-section');
+    const closeFormButton = document.getElementById('close-form-button');
 
     openFormButton.addEventListener('click', () => {
-      document.getElementById('video-section').style.display = 'none';
+      videoSection.style.display = 'none';
       formContainer.style.display = 'flex';
+    });
+
+    closeFormButton.addEventListener('click', () => {
+      formContainer.style.display = 'none';
+      videoSection.style.display = 'flex';
     });
 
     const saveEntry = (entry) => {
@@ -173,6 +197,8 @@
         form.reset();
         form.style.display = 'flex';
         confirmation.style.display = 'none';
+        formContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
       }, 3000);
     });
   </script>
