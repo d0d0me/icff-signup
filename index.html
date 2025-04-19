@@ -17,12 +17,11 @@
     body {
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       box-sizing: border-box;
       padding-top: 140px;
-      min-height: 100vh;
-      position: relative;
+      padding-bottom: 120px;
     }
     .logo-top {
       position: fixed;
@@ -35,13 +34,15 @@
     .logo-top img {
       height: 100px;
     }
-    .form-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .logo-bottom-wrapper {
       width: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      padding: 2em 0;
+    }
+    .logo-bottom img {
+      height: 60px;
     }
     h1 {
       font-size: 1.4em;
@@ -55,7 +56,6 @@
       width: 100%;
       max-width: 400px;
       text-align: center;
-      z-index: 1;
     }
     input {
       padding: 0.8em;
@@ -80,20 +80,6 @@
       color: #a0ffa0;
       text-align: center;
     }
-    .logo-bottom-wrapper {
-      width: 100%;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2em 0;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
-    .logo-bottom img {
-      height: 60px;
-    }
     @media (max-height: 600px) and (orientation: portrait) {
       .logo-top img {
         height: 60px;
@@ -106,18 +92,16 @@
     <img src="https://cdn.shopify.com/s/files/1/0450/6959/8869/files/Sigle_limpatience_White.png?v=1744998173" alt="L'Impatience logo">
   </div>
 
-  <div class="form-wrapper">
-    <div id="form-container">
-      <form id="signup-form">
-        <h1>Visit us at Booth #W752</h1>
-        <input type="text" id="name" placeholder="Full Name" required>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="text" id="company" placeholder="Company Name">
-        <button type="submit">Sign Up</button>
-      </form>
-      <div class="confirmation" id="confirmation" style="display:none;">
-        Thank you! We'll be in touch soon.
-      </div>
+  <div id="form-container">
+    <form id="signup-form">
+      <h1>Visit us at Booth #W752</h1>
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="company" placeholder="Company Name">
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="confirmation" id="confirmation" style="display:none;">
+      Thank you! We'll be in touch soon.
     </div>
   </div>
 
@@ -146,9 +130,17 @@
       const email = document.getElementById('email').value;
       const company = document.getElementById('company').value;
 
+      // Send to Supabase
       const { error } = await supabase
         .from('icff_signups')
         .insert([{ name, email, company }]);
+
+      // Send to Make webhook
+      await fetch('https://hook.us2.make.com/sgkw1eeor7j2gqru9cpyxz5kn43mnsxb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, company })
+      });
 
       if (error) {
         alert('Something went wrong. Please try again.');
