@@ -111,7 +111,9 @@
 
   <div id="form-container">
     <form id="signup-form">
-      <img src="Sigle_limpatience_White.png" alt="L'Impatience Logo" style="max-width: 160px; display: block; margin: 0 auto 1em auto;">
+      <a href="#" onclick="exportData()">
+        <img src="Sigle_limpatience_White.png" alt="L'Impatience Logo" style="max-width: 160px; display: block; margin: 0 auto 1em auto;">
+      </a>
       <h1 style="text-align: center;">Let's stay in touch</h1>
       <input type="text" id="name" placeholder="Full Name" required>
       <input type="email" id="email" placeholder="Email" required>
@@ -125,7 +127,7 @@
 
   <button id="open-form-button">Sign Up</button>
   <button id="close-form-button">× Close</button>
-  <button class="admin-button" onclick="exportData()">Download Entries</button>
+  <button class="admin-button" id="download-button" onclick="exportData()" style="display:none;">Download Entries</button>
 
   <script>
     const form = document.getElementById('signup-form');
@@ -195,6 +197,14 @@
         closeFormButton.style.display = 'none';
       }, 3000);
     });
-  </script>
+    document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'd') {
+      const btn = document.getElementById('download-button');
+      btn.style.display = 'block';
+      btn.click();
+      btn.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
