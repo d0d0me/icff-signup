@@ -14,29 +14,33 @@
       height: 100%;
       overflow: hidden;
     }
-    #video-section, #form-container {
+    #video-section {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      background: #000;
+      z-index: 0;
     }
     video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+    #form-container {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: -1;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.9);
     }
-    #open-form-button {
+    #open-form-button, #close-form-button {
       position: fixed;
       bottom: 1em;
       left: 1em;
@@ -47,20 +51,10 @@
       font-size: 1em;
       border-radius: 4px;
       cursor: pointer;
-      z-index: 2;
+      z-index: 3;
     }
     #close-form-button {
-      position: absolute;
-      top: 1em;
-      right: 1em;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid white;
-      color: white;
-      padding: 0.5em 1em;
-      font-size: 0.9em;
-      border-radius: 4px;
-      cursor: pointer;
-      z-index: 3;
+      display: none;
     }
     form {
       background-color: rgba(0, 0, 0, 0.8);
@@ -116,11 +110,9 @@
       <source src="testslomo.mov" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <button id="open-form-button">Sign Up</button>
   </div>
 
-  <div id="form-container" style="display: none;">
-    <button id="close-form-button">× Close</button>
+  <div id="form-container">
     <form id="signup-form">
       <h1>Visit us at Booth #W752</h1>
       <input type="text" id="name" placeholder="Full Name" required>
@@ -133,6 +125,8 @@
     </div>
   </div>
 
+  <button id="open-form-button">Sign Up</button>
+  <button id="close-form-button">× Close</button>
   <button class="admin-button" onclick="exportData()">Download Entries</button>
 
   <script>
@@ -140,17 +134,18 @@
     const confirmation = document.getElementById('confirmation');
     const formContainer = document.getElementById('form-container');
     const openFormButton = document.getElementById('open-form-button');
-    const videoSection = document.getElementById('video-section');
     const closeFormButton = document.getElementById('close-form-button');
 
     openFormButton.addEventListener('click', () => {
-      videoSection.style.display = 'none';
       formContainer.style.display = 'flex';
+      openFormButton.style.display = 'none';
+      closeFormButton.style.display = 'block';
     });
 
     closeFormButton.addEventListener('click', () => {
       formContainer.style.display = 'none';
-      videoSection.style.display = 'flex';
+      openFormButton.style.display = 'block';
+      closeFormButton.style.display = 'none';
     });
 
     const saveEntry = (entry) => {
@@ -198,7 +193,8 @@
         form.style.display = 'flex';
         confirmation.style.display = 'none';
         formContainer.style.display = 'none';
-        videoSection.style.display = 'flex';
+        openFormButton.style.display = 'block';
+        closeFormButton.style.display = 'none';
       }, 3000);
     });
   </script>
