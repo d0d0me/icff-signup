@@ -26,28 +26,26 @@
       z-index: 0;
     }
     #form-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
     form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  width: 90%;
-  max-width: 400px;
-  padding: 2em;
-  border-radius: 12px;
-}
-
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      width: 90%;
+      max-width: 400px;
+      padding: 2em;
+      border-radius: 12px;
+    }
     input {
       padding: 0.8em;
       font-size: 1em;
@@ -68,21 +66,12 @@
     .confirmation {
       margin-top: 2em;
       font-size: 1.2em;
-      color: #a0ffa0;
+      color: #fff;
       text-align: center;
     }
-    .admin-button {
-      position: fixed;
-      bottom: 1em;
-      right: 1em;
-      background: rgba(255,255,255,0.2);
-      border: 1px solid white;
-      color: white;
-      padding: 0.5em 1em;
-      font-size: 0.9em;
-      border-radius: 4px;
-      cursor: pointer;
-      z-index: 3;
+    #download-button {
+      display: none;
+      margin-top: 1em;
     }
   </style>
 </head>
@@ -91,9 +80,7 @@
 
   <div id="form-container">
     <form id="signup-form">
-      <a href="#" onclick="exportData()">
-        <img src="Sigle_limpatience_White.png" alt="L'Impatience Logo" style="max-width: 160px; display: block; margin: 0 auto 1em auto;">
-      </a>
+      <img src="Sigle_limpatience_White.png" alt="L'Impatience Logo" id="logo-img" style="max-width: 160px; display: block; margin: 0 auto 1em auto;">
       <h1 style="text-align: center;">Let's stay in touch</h1>
       <input type="text" id="name" placeholder="Full Name" required>
       <input type="email" id="email" placeholder="Email" required>
@@ -103,9 +90,8 @@
     <div class="confirmation" id="confirmation" style="display:none;">
       Thank you! We'll be in touch soon.
     </div>
+    <button id="download-button" onclick="exportData()">Download CSV</button>
   </div>
-
-  <button class="admin-button" id="download-button" onclick="exportData()" style="display:none;">Download Entries</button>
 
   <script>
     const form = document.getElementById('signup-form');
@@ -158,13 +144,18 @@
       }, 3000);
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === 'd') {
-        const btn = document.getElementById('download-button');
-        btn.style.display = 'block';
-        btn.click();
-        btn.style.display = 'none';
-      }
+    // Triple-tap the logo to show download button
+    let tapCount = 0;
+    let tapTimer;
+    document.getElementById('logo-img').addEventListener('touchend', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => {
+        if (tapCount >= 3) {
+          document.getElementById('download-button').style.display = 'block';
+        }
+        tapCount = 0;
+      }, 300);
     });
   </script>
 </body>
