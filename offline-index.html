@@ -31,28 +31,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 2;
-      background: rgba(0, 0, 0, 0.6);
-    }
-    #open-form-button, #close-form-button {
-      position: fixed;
-      bottom: 1em;
-      left: 1em;
-      background: rgba(255, 255, 255, 0.7);
-      border: none;
-      color: #1c1c1c;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-      border-radius: 4px;
-      cursor: pointer;
-      z-index: 3;
-    }
-    #close-form-button {
-      display: none;
+      background: rgba(0, 0, 0, 0.4); /* Optional: add darkness for readability */
     }
     form {
       display: flex;
@@ -60,6 +44,9 @@
       gap: 1em;
       width: 90%;
       max-width: 400px;
+      background: rgba(0,0,0,0.6);
+      padding: 2em;
+      border-radius: 12px;
     }
     input {
       padding: 0.8em;
@@ -118,28 +105,11 @@
     </div>
   </div>
 
-  <button id="open-form-button">Sign Up</button>
-  <button id="close-form-button">× Close</button>
   <button class="admin-button" id="download-button" onclick="exportData()" style="display:none;">Download Entries</button>
 
   <script>
     const form = document.getElementById('signup-form');
     const confirmation = document.getElementById('confirmation');
-    const formContainer = document.getElementById('form-container');
-    const openFormButton = document.getElementById('open-form-button');
-    const closeFormButton = document.getElementById('close-form-button');
-
-    openFormButton.addEventListener('click', () => {
-      formContainer.style.display = 'flex';
-      openFormButton.style.display = 'none';
-      closeFormButton.style.display = 'block';
-    });
-
-    closeFormButton.addEventListener('click', () => {
-      formContainer.style.display = 'none';
-      openFormButton.style.display = 'block';
-      closeFormButton.style.display = 'none';
-    });
 
     const saveEntry = (entry) => {
       const key = 'icff_signups';
@@ -185,9 +155,6 @@
         form.reset();
         form.style.display = 'flex';
         confirmation.style.display = 'none';
-        formContainer.style.display = 'none';
-        openFormButton.style.display = 'block';
-        closeFormButton.style.display = 'none';
       }, 3000);
     });
 
